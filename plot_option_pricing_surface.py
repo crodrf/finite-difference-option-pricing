@@ -34,6 +34,6 @@ ax.set_zlabel(r'$C(S, t)$ (Option Price)', fontsize=12, labelpad=10)
 cbar = fig.colorbar(surface, shrink=0.5, aspect=10, pad=0.1)
 cbar.set_label("Option Price", rotation=270, labelpad=15)
 
-# Show plot
+# Save plot to file instead of displaying it
 plt.tight_layout()
-plt.show()
+plt.savefig("plot.png")  # Saves the plot as plot.png for artifact upload in CI
