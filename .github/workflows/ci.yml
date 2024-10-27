@@ -15,20 +15,19 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install C++ dependencies
-        run: sudo apt-get update && sudo apt-get install -y cmake g++ wget
+        run: sudo apt-get update && sudo apt-get install -y cmake g++ unzip
 
-      - name: Download and Install Google Test
+      - name: Download and Build Google Test
         run: |
-          # Download Google Test source code
           wget -O googletest-release-1.11.0.zip https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
           unzip googletest-release-1.11.0.zip
           cd googletest-release-1.11.0
-          # Build Google Test
-          cmake .
+          mkdir build && cd build
+          cmake ..
           make
-          # Move libraries to system path
-          sudo cp googletest/*.a /usr/lib
+          # Copy Google Test libraries to system path
           sudo cp googlemock/*.a /usr/lib
+          sudo cp googletest/*.a /usr/lib
 
       - name: Configure and Build C++ Project
         run: |
@@ -47,7 +46,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8'  # Specify a stable Python version
+          python-version: '3.8'
 
       - name: Install Python Dependencies
         run: |
@@ -59,8 +58,8 @@ jobs:
           python plot_option_pricing_surface.py
 
       - name: Save Plot as Artifact
-        if: ${{ success() }}  # Correct syntax for condition
+        if: ${{ success() }}
         uses: actions/upload-artifact@v3
         with:
           name: option-pricing-plot
-          path: plot.png  # Ensure the script generates this file
+          path: plot.png
