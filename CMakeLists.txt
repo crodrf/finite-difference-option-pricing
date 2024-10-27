@@ -25,9 +25,27 @@ set(HEADERS
 # Create executable for main application
 add_executable(OptionPricingFDM ${SOURCES} ${HEADERS})
 
-# Google Test setup (assumes you have Google Test installed)
-# Find GoogleTest package
-find_package(GTest REQUIRED)
+# Google Test setup with conditional download
+# Try to find an installed version of GoogleTest first
+find_package(GTest)
+
+if(NOT GTest_FOUND)
+    # If GTest is not found, use FetchContent to download and build it
+    include(FetchContent)
+    FetchContent_Declare(
+            googletest
+            URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
+    )
+    FetchContent_MakeAvailable(googletest)
+    # Set GTest library and include variables for consistency
+    set(GTEST_LIBRARIES GTest::GTest GTest::Main)
+    set(GTEST_INCLUDE_DIRS ${gtest_SOURCE_DIR}/include)
+else()
+    # If GTest is found, use its existing libraries
+    set(GTEST_LIBRARIES GTest::GTest GTest::Main)
+endif()
+
+# Include directories for GTest
 include_directories(${GTEST_INCLUDE_DIRS})
 
 # Add test files
@@ -39,9 +57,8 @@ set(TEST_SOURCES
 
 # Create test executable
 add_executable(OptionPricingFDM_tests ${TEST_SOURCES} ${HEADERS})
-target_link_libraries(OptionPricingFDM_tests GTest::GTest GTest::Main)
+target_link_libraries(OptionPricingFDM_tests ${GTEST_LIBRARIES})
 
 # Enable testing and register tests
 enable_testing()
 add_test(NAME OptionPricingFDM_tests COMMAND OptionPricingFDM_tests)
-

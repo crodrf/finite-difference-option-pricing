@@ -17,13 +17,6 @@ jobs:
       - name: Install C++ dependencies
         run: sudo apt-get update && sudo apt-get install -y cmake g++ unzip
 
-      - name: Download and Build Google Test
-        run: |
-          mkdir -p googletest && cd googletest
-          cmake -Dgtest_build_samples=ON -Dgtest_build_tests=ON -DCMAKE_INSTALL_PREFIX=/usr/local ..
-          make
-          sudo make install
-
       - name: Configure and Build C++ Project
         run: |
           mkdir -p build
