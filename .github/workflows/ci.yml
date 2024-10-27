@@ -19,15 +19,10 @@ jobs:
 
       - name: Download and Build Google Test
         run: |
-          wget -O googletest-release-1.11.0.zip https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
-          unzip googletest-release-1.11.0.zip
-          cd googletest-release-1.11.0
-          mkdir build && cd build
-          cmake ..
+          mkdir -p googletest && cd googletest
+          cmake -Dgtest_build_samples=ON -Dgtest_build_tests=ON -DCMAKE_INSTALL_PREFIX=/usr/local ..
           make
-          # Copy Google Test libraries to system path
-          sudo cp googlemock/*.a /usr/lib
-          sudo cp googletest/*.a /usr/lib
+          sudo make install
 
       - name: Configure and Build C++ Project
         run: |
