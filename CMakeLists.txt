@@ -38,7 +38,7 @@ if(NOT GTest_FOUND)
     )
     FetchContent_MakeAvailable(googletest)
     # Set GTest library and include variables for consistency
-    set(GTEST_LIBRARIES GTest::GTest GTest::Main)
+    set(GTEST_LIBRARIES GTest::gtest GTest::gtest_main)
     set(GTEST_INCLUDE_DIRS ${gtest_SOURCE_DIR}/include)
 else()
     # If GTest is found, use its existing libraries
