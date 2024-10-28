@@ -20,28 +20,25 @@ set(HEADERS
         include/option.h
         include/payoff.h
         include/pde.h
+        include/thread_pool.h      # Add the new thread pool header
 )
 
 # Create executable for main application
 add_executable(OptionPricingFDM ${SOURCES} ${HEADERS})
 
 # Google Test setup with conditional download
-# Try to find an installed version of GoogleTest first
 find_package(GTest)
 
 if(NOT GTest_FOUND)
-    # If GTest is not found, use FetchContent to download and build it
     include(FetchContent)
     FetchContent_Declare(
             googletest
             URL https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
     )
     FetchContent_MakeAvailable(googletest)
-    # Set GTest library and include variables for consistency
     set(GTEST_LIBRARIES GTest::gtest GTest::gtest_main)
     set(GTEST_INCLUDE_DIRS ${gtest_SOURCE_DIR}/include)
 else()
-    # If GTest is found, use its existing libraries
     set(GTEST_LIBRARIES GTest::GTest GTest::Main)
 endif()
 
