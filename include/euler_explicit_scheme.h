@@ -31,18 +31,18 @@ public:
     static void calculate_inner_points(ConvectionDiffusionPDE *pde, double delta_t, double delta_x, double prev_t,
                                        const std::vector<double> &asset_prices,
                                        const std::vector<double> &previous_values,
-                                       std::vector<double> &current_values) {
+                                       std::vector<double> &current_values,
+                                       unsigned long start_index, unsigned long end_index) {
         assert(pde != nullptr && "PDE pointer is null");
         assert(
             asset_prices.size() == previous_values.size() && previous_values.size() == current_values.size() &&
             "Vector sizes do not match");
         assert(delta_x > 0 && delta_t > 0 && "Invalid time or space step size");
 
-        for (size_t j = 1; j < asset_prices.size() - 1; ++j) {
+        for (size_t j = start_index; j < end_index; ++j) {
             double alpha, beta, gamma;
             calculate_coefficients(pde, delta_t, delta_x, prev_t, asset_prices[j], alpha, beta, gamma);
-            current_values[j] = alpha * previous_values[j - 1] + beta * previous_values[j] + gamma * previous_values[
-                                    j + 1];
+            current_values[j] = alpha * previous_values[j - 1] + beta * previous_values[j] + gamma * previous_values[j + 1];
         }
     }
 
