@@ -59,7 +59,7 @@ This project numerically solves the Black-Scholes Partial Differential Equation 
 ### Build Instructions
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/finite-difference-option-pricing.git
+   git clone https://github.com/crodrf/finite-difference-option-pricing.git
    cd finite-difference-option-pricing
    ```
 2. Build the project using CMake:
